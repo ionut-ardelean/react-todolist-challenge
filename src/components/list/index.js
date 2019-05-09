@@ -1,10 +1,20 @@
 import React, { Component } from "react";
-
+import { connect } from 'react-redux';
 import './index.css';
-import Button from '../button';
+import ListItem from '../listitem';
+
+import {
+    loadList,
+} from '../../actions/index';
 
 class List extends Component {
-
+    constructor() {
+        super();
+        this.state = {};
+    }
+    componentDidMount() {
+        this.props.loadList();
+    }
     render() {
         return (
             <table>
@@ -15,22 +25,29 @@ class List extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Item</td>
-                        <td>
-                            <Button type='edit' onClick={''}>
-                                Edit
-                            </Button>
-                            <Button type='delete' onClick={''}>
-                                Delete
-                            </Button> 
-                        </td>
-                    </tr>
-                    
+                    {this.props.list.map(item => {
+                        if(!item.hidden) return (
+                            <ListItem key={item.title} item={item} />
+                        )
+                        else return null
+                    })}
                 </tbody>
             </table>
         );
     }
 }
 
-export default List;
+const mapStateToProps = state => ({
+    list: state.listReducers.list
+});
+
+const mapDispatchToProps = dispatch => ({
+    loadList: () => {
+        dispatch(loadList());
+    }
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(List);
