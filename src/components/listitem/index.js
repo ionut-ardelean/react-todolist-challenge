@@ -4,62 +4,64 @@ import Button from '../button';
 import Input from '../input';
 import './index.css';
 import {
-    setEditing,
     saveItem,
     deleteItem
 } from '../../actions/index';
 
-class ListItem extends Component {
+export class ListItem extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            title : this.props.item.title || ''
+            title : this.props.item.title || '',
+            isEditing: false,
         }
     }
     onEditChange(value) {
         this.setState({title: value});
     }
     editItem() {
-        this.props.setEditing(this.props.item._id);
+        this.setState({isEditing: true});
     }
     deleteItem() {
+        this.setState({isEditing: false});
         this.props.deleteItem(this.props.item);
     }
     saveItem() {
-        this.props.setEditing(null);
+        this.setState({isEditing: false});
         this.props.saveItem({ ...this.props.item, ...this.state});
     }
     cancelEdit() {
-        this.props.setEditing(null);
+        this.setState({title: this.props.item.title, isEditing: false});
     }
     render() {
+        //console.log(this.props.item);
         return (
-            <tr>
+            <tr className="list-item-row">
                 <td>
-                {(this.props.editingItem == null || (this.props.editingItem !== null && this.props.editingItem !== this.props.item._id)) && 
-                (this.props.item.title)}
-                {this.props.editingItem !== null && this.props.editingItem === this.props.item._id && (
+                {!this.state.isEditing && (
+                this.props.item.title)}
+                {this.state.isEditing && (
                     <Input value={this.state.title} onChange={(value) => this.onEditChange(value)} />
                 )}
                 </td>
                 <td>
-                    {this.props.editingItem == null && (
+                    {!this.state.isEditing && (
                     <Button type='edit' onClick={() => this.editItem()}>
                         Edit
                     </Button>
                     )}
-                    {this.props.editingItem == null && (
+                    {!this.state.isEditing && (
                     <Button type='delete' onClick={() => this.deleteItem()}>
                         Delete
                     </Button>
                     )}
-                    {this.props.editingItem !== null && (
+                    {this.state.isEditing && (
                     <Button type='edit' onClick={() => this.saveItem()}>
                         Save
                     </Button>
                     )}
-                    {this.props.editingItem !== null && (
+                    {this.state.isEditing && (
                     <Button type='delete' onClick={() => this.cancelEdit()}>
                         Cancel
                     </Button>
@@ -69,13 +71,7 @@ class ListItem extends Component {
         )
     }
 }
-const mapStateToProps = state => ({
-    editingItem: state.listReducers.editingItem,
-});
 const mapDispatchToProps = dispatch => ({
-    setEditing: (id) => {
-        dispatch(setEditing(id));
-    },
     saveItem: (item) => {
         dispatch(saveItem(item));
     },
@@ -85,6 +81,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps,
 )(ListItem);

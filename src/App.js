@@ -12,7 +12,7 @@ import {
     cancelError
 } from './actions/index';
 
-class App extends Component {
+export class App extends Component {
     constructor(props) {
         super(props);
 
@@ -28,9 +28,6 @@ class App extends Component {
         this.setState({ value: '' });
     }
     render() {
-        // if (this.props.error) {
-        //     alert(this.props.error.message);
-        // }
         return (
             <div className="container">
 

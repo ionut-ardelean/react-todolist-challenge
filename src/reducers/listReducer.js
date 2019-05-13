@@ -27,15 +27,6 @@ export const list = (state = initialState, action) => {
   }
 }
 
-export const editingItem = (state = null, action) => {
-  switch (action.type) {
-    case types.EDIT_ITEM:
-      return action.data;
-    default:
-      return state;
-  }
-}
-
 export const error = (state = null, action) => {
   switch (action.type) {
     case types.GET_LIST_SUCCESS:
@@ -57,7 +48,6 @@ export const error = (state = null, action) => {
 
 export default combineReducers({
   list,
-  editingItem,
   error
 });
 

@@ -41,7 +41,7 @@ export function errorHandler(error) {
 
 export function loadList() {
     return (dispatch) => {
-        apiGet('todo')
+        return apiGet('todo')
         .then(json => dispatch(loadListSuccess(json)))
         .catch(error => {
             dispatch(loadError());
@@ -53,7 +53,7 @@ export function loadList() {
 export function addNewItem(item) {
     return (dispatch) => {
         dispatch({ type: types.ADDING_ITEM, data: item });
-        apiPost('todo', item)
+        return apiPost('todo', item)
         .then(json => dispatch(addNewItemSuccess(json)))
         .catch(error => {
             dispatch(addNewItemError(item));
@@ -72,7 +72,7 @@ export const setEditing = (id) => (
 export function saveItem(item) {
     return (dispatch) => {
         dispatch({ type: types.SAVING_ITEM, data: item });
-        apiPut(`todo/${item._id}`, item)
+        return apiPut(`todo/${item._id}`, item)
         .then(json => dispatch(saveItemSuccess(json)))
         .catch(error => {
             dispatch(saveItemError(item));
@@ -84,7 +84,7 @@ export function saveItem(item) {
 export function deleteItem(item) {
     return (dispatch) => {
         dispatch({ type: types.DELETING_ITEM, data: item });
-        apiDelete(`todo/${item._id}`, item)
+        return apiDelete(`todo/${item._id}`, item)
         .then(json => dispatch(deleteItemSuccess(json)))
         .catch(error => {
             dispatch(deleteItemError(item));

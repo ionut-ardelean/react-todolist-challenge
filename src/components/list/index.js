@@ -7,11 +7,7 @@ import {
     loadList,
 } from '../../actions/index';
 
-class List extends Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
+export class List extends Component {
     componentDidMount() {
         this.props.loadList();
     }
